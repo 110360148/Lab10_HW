@@ -4,6 +4,10 @@ import android.app.Service
 import android.content.Intent
 import android.os.Bundle
 import android.os.IBinder
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 class MyService : Service() {
 
@@ -18,10 +22,10 @@ class MyService : Service() {
 
     override fun onStartCommand(intent: Intent, flags: Int, startId: Int): Int {
         flag = intent.getBooleanExtra("flag", false)
-        Thread {
+        CoroutineScope(Dispatchers.IO).launch {
             while (flag) {
                 try {
-                    Thread.sleep(1000)
+                    delay(1000)
                 } catch (e: InterruptedException) {
                     e.printStackTrace()
                 }
@@ -38,7 +42,7 @@ class MyService : Service() {
                 i.putExtras(bundle)
                 sendBroadcast(i)
             }
-        }.start()
+        }
         return START_STICKY
     }
 

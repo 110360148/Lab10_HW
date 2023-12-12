@@ -14,10 +14,14 @@ class MyService : Service() {
     override fun onCreate() {
         super.onCreate()
         CoroutineScope(Dispatchers.IO).launch {
-            delay(5000)
-            val intent = Intent(this@MyService, MainActivity2::class.java)
-            intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
-            this@MyService.startActivity(intent)
+            try {
+                delay(5000)
+                val intent = Intent(this@MyService, MainActivity2::class.java)
+                intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
+                this@MyService.startActivity(intent)
+            } catch (e: InterruptedException) {
+                e.printStackTrace()
+            }
             stopSelf()
         }
     }
